@@ -14,12 +14,20 @@ datasets = {file_path.split('/')[-1]: pd.read_csv(file_path) for file_path in fi
 print("Datasets loaded successfully!")
 # Display the datasets to the user
 datasets.keys()
+df_disease_symptom = pd.read_csv("Datasets/Disease_symptom_and_patient_profile_dataset.csv")
+df_healthcare_dataset = pd.read_csv("Datasets/healthcare_dataset.csv")
+df_medquad = pd.read_csv("Datasets/medquad.csv")
+
+df_coronary_complications = pd.read_csv("Datasets/readmissions-for-isolated-coronary-artery-bypass-graft-cabg-complications-metadata.csv")
 
 # Load the dataset
-df_disease_symptom = pd.read_csv("Datasets/Disease_symptom_and_patient_profile_dataset.csv")
+datset_list = [
+df_disease_symptom ,
+df_healthcare_dataset,
+df_medquad,
+df_coronary_complications
+]
 
-# Display the first few rows
-print(df_disease_symptom.head())
-
-# Get basic information
-print(df_disease_symptom.info())
+for dataset in datset_list:
+    print(dataset.head())
+    print(dataset.info())
