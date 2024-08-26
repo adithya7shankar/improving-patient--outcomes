@@ -31,3 +31,4 @@ df_coronary_complications
 for dataset in datset_list:
     print(dataset.head())
     print(dataset.info())
+    print(dataset.describe())
