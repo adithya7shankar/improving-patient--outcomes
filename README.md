@@ -52,6 +52,9 @@ Specialist's details
 
 Lab Test results
 
+## Progress
+- Loaded up datasets.
+- Deciding model macro-architecture based on research data.
 
 ## References
 1. Yang, X., Chen, A., PourNejatian, N. et al. A large language model for electronic health records. npj Digit. Med. 5, 194 (2022). https://doi.org/10.1038/s41746-022-00742-2 
