@@ -1,5 +1,5 @@
 import pandas as pd
-
+import tensorflow as tf
 # File paths
 file_paths = [
     "Datasets/Disease_symptom_and_patient_profile_dataset.csv",
@@ -48,3 +48,46 @@ for dataset in datset_list:
 #Normalize the numerical variables (like age).
 #Split the data into training and test sets.#
 #Build and train a neural network model.
+
+
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+
+# Convert categorical variables to numerical values
+label_encoders = {}
+categorical_columns = ['Disease', 'Fever', 'Cough', 'Fatigue', 'Difficulty Breathing', 
+                       'Gender', 'Blood Pressure', 'Cholesterol Level', 'Outcome Variable']
+
+for column in categorical_columns:
+    le = LabelEncoder()
+    dataset[column] = le.fit_transform(dataset[column])
+    label_encoders[column] = le
+
+# Normalize the numerical values
+scaler = StandardScaler()
+dataset['Age'] = scaler.fit_transform(dataset[['Age']])
+
+# Split the data into input features (X) and target variable (y)
+X = dataset.drop('Outcome Variable', axis=1)
+y = dataset['Outcome Variable']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Build the neural network model
+model = tf.keras.Sequential([
+    tf.keras.layers.Dense(16, activation='relu', input_shape=(X_train.shape[1],)),
+    tf.keras.layers.Dense(8, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+# Compile the model
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+# Train the model
+history = model.fit(X_train, y_train, epochs=20, batch_size=16, validation_split=0.2, verbose=1)
+
+# Evaluate the model on the test set
+test_loss, test_accuracy = model.evaluate(X_test, y_test)
+
+test_loss, test_accuracy
