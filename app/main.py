@@ -114,7 +114,7 @@ import numpy as np
 
 # Drop irrelevant columns
 columns_to_drop = ['Name', 'Doctor', 'Hospital', 'Date of Admission', 'Discharge Date']
-dataset_cleaned = dataset_new.drop(columns=columns_to_drop)
+dataset_cleaned = df_healthcare_dataset.drop(columns=columns_to_drop)
 
 # Convert categorical variables to numerical values
 label_encoders = {}
