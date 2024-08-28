@@ -60,16 +60,16 @@ categorical_columns = ['Disease', 'Fever', 'Cough', 'Fatigue', 'Difficulty Breat
 
 for column in categorical_columns:
     le = LabelEncoder()
-    dataset[column] = le.fit_transform(dataset[column])
+    df_disease_symptom[column] = le.fit_transform(df_disease_symptom[column])
     label_encoders[column] = le
 
 # Normalize the numerical values
 scaler = StandardScaler()
-dataset['Age'] = scaler.fit_transform(dataset[['Age']])
+df_disease_symptom['Age'] = scaler.fit_transform(df_disease_symptom[['Age']])
 
 # Split the data into input features (X) and target variable (y)
-X = dataset.drop('Outcome Variable', axis=1)
-y = dataset['Outcome Variable']
+X = df_disease_symptom.drop('Outcome Variable', axis=1)
+y = df_disease_symptom['Outcome Variable']
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -91,3 +91,59 @@ history = model.fit(X_train, y_train, epochs=20, batch_size=16, validation_split
 test_loss, test_accuracy = model.evaluate(X_test, y_test)
 
 test_loss, test_accuracy
+
+
+
+
+
+
+
+
+
+
+
+
+##NN 2
+
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import numpy as np
+
+
+# Drop irrelevant columns
+columns_to_drop = ['Name', 'Doctor', 'Hospital', 'Date of Admission', 'Discharge Date']
+dataset_cleaned = dataset_new.drop(columns=columns_to_drop)
+
+# Convert categorical variables to numerical values
+label_encoders = {}
+categorical_columns = ['Gender', 'Blood Type', 'Medical Condition', 'Insurance Provider', 'Admission Type', 'Medication', 'Test Results']
+
+for column in categorical_columns:
+    le = LabelEncoder()
+    dataset_cleaned[column] = le.fit_transform(dataset_cleaned[column])
+    label_encoders[column] = le
+
+# Check for any missing values
+dataset_cleaned = dataset_cleaned.dropna()
+
+# Split the data into input features (X) and target variable (y)
+X = dataset_cleaned.drop('Billing Amount', axis=1)
+y = dataset_cleaned['Billing Amount']
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Build the regression model
+model = RandomForestRegressor(random_state=42)
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+mae = mean_absolute_error(y_test, y_pred)
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+
+mae, rmse
