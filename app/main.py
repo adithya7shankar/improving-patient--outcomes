@@ -32,3 +32,19 @@ for dataset in datset_list:
     print(dataset.head())
     print(dataset.info())
     print(dataset.describe())
+
+# The dataset contains information about diseases, symptoms, patient profiles, and an outcome variable. The columns include:
+
+### Disease: The type of disease (e.g., Influenza, Common Cold).
+# Fever, Cough, Fatigue, Difficulty Breathing: Symptoms marked as "Yes" or "No."
+# Age: The age of the patient.
+#Gender: The gender of the patient.
+#Blood Pressure: Blood pressure status (e.g., Low, Normal).
+#Cholesterol Level: Cholesterol level (e.g., Normal).
+#Outcome Variable: The target variable indicating the outcome, marked as "Positive" or "Negative."
+#To create a neural network, we'll need to:
+
+#Convert categorical variables (like symptoms, gender, etc.) into numerical values.
+#Normalize the numerical variables (like age).
+#Split the data into training and test sets.#
+#Build and train a neural network model.
