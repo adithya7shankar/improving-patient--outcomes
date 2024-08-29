@@ -16,10 +16,15 @@ RUN apt-get install -y software-properties-common && \
     python3-pip
 # Install any needed packages specified in requirements.txt
 RUN apt-get install -y git-all
-RUN apt-get update && apt-get install -y --no-install-recommends\
-    python3 \
+# Update and install necessary packages
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
     python3-venv \
+    python3-pip \
+    git-all \
+    python3-cryptography \
     python3-opencv \
+    python3-matplotlib \
     python3-pandas \
     python3-numpy \
     python3-scipy \
@@ -31,11 +36,8 @@ RUN python3 -m venv /opt/venv
 
 # Activate the virtual environment and install packages
 RUN /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install tensorflow \
-    && /opt/venv/bin/pip install keras \
-    && /opt/venv/bin/pip install torch
+    && /opt/venv/bin/pip install tensorflow[cuda] keras torch
 
-# Make sure the virtual environment is activated by default
 ENV PATH="/opt/venv/bin:$PATH"
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get -y upgrade && \
@@ -43,7 +45,8 @@ RUN apt-get -y upgrade && \
 RUN git config --global user.name "$GITUN" &&\
     git config --global user.email "$GITEMAIL" &&\
     git config --global init.defaultBranch main
-# Make port 80 available to the world outside this container
+#Make port 80 available to the world outside this container
+COPY . /app
 EXPOSE 80
 
 # Run main.py when the container launches
