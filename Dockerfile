@@ -2,7 +2,7 @@
 FROM ubuntu:latest 
 # Set the working directory in the container
 WORKDIR /app
-ARG PYVER="3.9"
+ARG PYVER="3.12"
 ENV TZ=US/Pacific \
     DEBIAN_FRONTEND=noninteractive
 ARG GITUN="Adithya Shankar"
@@ -16,7 +16,7 @@ RUN apt-get install -y software-properties-common && \
     python3-pip
 # Install any needed packages specified in requirements.txt
 RUN apt-get install -y git-all
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends\
     python3 \
     python3-venv \
     python3-opencv \
@@ -31,12 +31,13 @@ RUN python3 -m venv /opt/venv
 
 # Activate the virtual environment and install packages
 RUN /opt/venv/bin/pip install --upgrade pip \
-    && /opt/venv/bin/pip install tensorflow keras torch
+    && /opt/venv/bin/pip install tensorflow \
+    && /opt/venv/bin/pip install keras \
+    && /opt/venv/bin/pip install torch
 
 # Make sure the virtual environment is activated by default
 ENV PATH="/opt/venv/bin:$PATH"
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt install -y python3-matplotlib
 RUN apt-get -y upgrade && \
     apt-get install -y python3-pip
 RUN git config --global user.name "$GITUN" &&\
